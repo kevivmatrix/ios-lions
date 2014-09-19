@@ -14,8 +14,13 @@ class ViewController: UIViewController {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var ageLabel: UILabel!
     @IBOutlet weak var breedLabel: UILabel!
+    var tigers:Array<Tiger> = []
+    var currentTigerIndex:Int = 0
+    
     @IBAction func nextButtonClicked(sender: UIButton) {
-        
+        let randomNumber = Int(arc4random_uniform(UInt32(tigers.count)))
+        let tiger = tigers[randomNumber]
+        showTiger(tiger)
     }
     
     override func viewDidLoad() {
@@ -26,17 +31,29 @@ class ViewController: UIViewController {
         var thirdTiger = Tiger(age: 4, name: "jacob", breed: "siberian", image: UIImage(named: "SiberianTiger.jpg"))
         var fourthTiger = Tiger(age: 3, name: "spar", breed: "malayan", image: UIImage(named: "MalayanTiger.jpg"))
         
-        var tigers = [ firstTiger, secondTiger, thirdTiger, fourthTiger ]
-        
-        imageView.image = firstTiger.image
-        nameLabel.text = firstTiger.name
-        ageLabel.text = "\(firstTiger.age)"
-        breedLabel.text = firstTiger.breed
+        tigers += [ firstTiger, secondTiger, thirdTiger, fourthTiger ]
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func showTiger(tiger: Tiger){
+        UIView.transitionWithView(
+            self.view,
+            duration: 2,
+            options: UIViewAnimationOptions.TransitionCrossDissolve,
+            animations: {
+                self.imageView.image = tiger.image
+                self.nameLabel.text = tiger.name
+                self.ageLabel.text = "\(tiger.age)"
+                self.breedLabel.text = tiger.breed
+            },
+            completion: {
+                (finished: Bool) -> () in
+            }
+        )
     }
 
 
