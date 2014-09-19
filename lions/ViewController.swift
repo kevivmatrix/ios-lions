@@ -18,8 +18,12 @@ class ViewController: UIViewController {
     var currentTigerIndex:Int = 0
     
     @IBAction func nextButtonClicked(sender: UIButton) {
-        let randomNumber = Int(arc4random_uniform(UInt32(tigers.count)))
-        let tiger = tigers[randomNumber]
+        var randomNumber = Int(arc4random_uniform(UInt32(tigers.count)))
+        while currentTigerIndex == randomNumber {
+            randomNumber = Int(arc4random_uniform(UInt32(tigers.count)))
+        }
+        currentTigerIndex = randomNumber
+        let tiger = tigers[currentTigerIndex]
         showTiger(tiger)
     }
     
@@ -32,6 +36,9 @@ class ViewController: UIViewController {
         var fourthTiger = Tiger(age: 3, name: "spar", breed: "malayan", image: UIImage(named: "MalayanTiger.jpg"))
         
         tigers += [ firstTiger, secondTiger, thirdTiger, fourthTiger ]
+        
+        let tiger = tigers[currentTigerIndex]
+        showTiger(tiger)
     }
 
     override func didReceiveMemoryWarning() {
@@ -47,8 +54,9 @@ class ViewController: UIViewController {
             animations: {
                 self.imageView.image = tiger.image
                 self.nameLabel.text = tiger.name
-                self.ageLabel.text = "\(tiger.age)"
+                self.ageLabel.text = "\(tiger.ageInTigerYearsFromAge())"
                 self.breedLabel.text = tiger.breed
+                tiger.chuffANumberOfTimes(tiger.age)
             },
             completion: {
                 (finished: Bool) -> () in
